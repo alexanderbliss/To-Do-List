@@ -69,8 +69,9 @@ function saveList(postList) {
         getList()
     }).fail(function (error) {
         console.log(error);
-    })//end of save list
-}
+    })
+}//end of save list
+
 function completeClick() {
     console.log('complete click'); 
     completeIn = true
@@ -115,7 +116,7 @@ function appendToDom(array) {
     $('.container').empty();
     for (var i = 0; i < array.length; i++) {
         list = array[i];
-        var $tr = $('<tr></tr>');
+        var $tr = $('<tr class=table ></tr>');
         $tr.data('list', list);
         $tr.append('<td>' + list.task + '</td>');
         $tr.append('<td>' + list.date + '</td>');
@@ -138,8 +139,8 @@ function deleteClick() {
     console.log('in delete clicked.');
     var listId = $(this).data('id');
     console.log(listId);
-    // window.comfirm('Are you sure you want to remove this task');
-    // if (confirm('press a button' === true)){
+    var r = window.confirm('Are you sure you want to remove this task');
+    if (r == true){
     $.ajax({
         method: "DELETE",
         url: '/toDo/' + listId
@@ -149,8 +150,11 @@ function deleteClick() {
     }).fail(function (error) {
         console.log(error);
     })
-}//end of deleteClick
-// }
+}else {
+    console.log('not deleted');
+    
+}
+}//end of delete click
 
 function updateList(updatedList) {
     console.log('in edit click');
@@ -165,4 +169,4 @@ function updateList(updatedList) {
 
     })
 
-}
+}//end of updateList

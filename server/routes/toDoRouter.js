@@ -22,7 +22,7 @@ router.get('/', function (req, res) {
             }); // END QUERY
         }
     }); 
-});
+});//END GET ROUTE
 
 router.post('/', function (req, res) {
     var list = req.body; // This is the data sent
@@ -45,7 +45,7 @@ router.post('/', function (req, res) {
             }); // END QUERY
         }
     });
-});
+});//End POST route
 
 router.put('/toDocomplete/:id', function (req, res) {
     var listId = req.params.id; // id from dom
@@ -68,7 +68,7 @@ router.put('/toDocomplete/:id', function (req, res) {
             }); // END QUERY
         }
     });
-});
+});//END PUT ROUTE (for complete button)
 
 router.put('/:id' , function (req, res) {
     var listId = req.params.id; // id from dom
@@ -91,7 +91,7 @@ router.put('/:id' , function (req, res) {
             }); // END QUERY
         }
     }); 
-});
+});//END PUT ROUTE 
 
 router.delete('/:id', function (req, res) {
     var listId = req.params.id;
@@ -112,6 +112,6 @@ router.delete('/:id', function (req, res) {
             }); // END QUERY
         }
     }); 
-});
+});//END DELETE ROUTE
 
 module.exports = router;
