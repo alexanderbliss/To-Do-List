@@ -7,7 +7,7 @@ function readyNow() {
     console.log('js and JQ sourced')
     //click handelers
     getList();
-    // $('.complete').on('click', completeClick);
+    $('.container').on('click', '.complete', completeClick);
     $('.container').on('click', '.edit', editList);
     $('.container').on('click', '.remove', deleteClick)
     $('.sub').on('click', function () {
@@ -16,8 +16,8 @@ function readyNow() {
         var dateIn = $('#dateIn').val();
         var completeIn = false;
         var notesIn = $('#notesIn').val();
-
-
+        
+        
         //object to send to server.
         var postList = {
             task: taskIn,
@@ -25,9 +25,9 @@ function readyNow() {
             complete: completeIn,
             notes: notesIn
         };
-        $('#taskIn').empty();
-        $('#dateIn').empty();
-        $('#notesIn').empty();
+        $('.listInput').empty();//this should clear input feilds
+
+
         if (editing) {
             editing = false;
             updateList(postList);
@@ -49,10 +49,12 @@ function editList() {
 
     $('.header').text('Editing item');
     var existingData = $(this).closest('tr').data('list');
+    console.log(existingData);
+
     $('#taskIn').val(existingData.task);
     $('#dateIn').val(existingData.date);
     $('#notesIn').val(existingData.description);//aka notes.
-}
+}//end of edit list
 
 
 function saveList(postList) {
@@ -67,10 +69,29 @@ function saveList(postList) {
         getList()
     }).fail(function (error) {
         console.log(error);
-    })
+    })//end of save list
 }
-
-//Get requerst to get database to dom.
+function completeClick() {
+    console.log('complete click'); 
+    completeIn = true
+    var comId = $(this).data('id');
+    console.log(comId);
+    complete = {
+        completed: completeIn
+    }
+    console.log(complete);
+        $.ajax({
+            method: "PUT",
+            url: '/toDo/toDocomplete/' + comId,
+            data: complete
+        }).done(function (responce) {
+            console.log('responce', responce);
+            getList()
+        }).fail(function (error) {
+            console.log(error);
+        })
+}//end of complete click
+//Get request to get database to dom.
 function getList() { //getting List data append in done
     console.log('in getList');
     // ajax call to server to get List
@@ -85,7 +106,7 @@ function getList() { //getting List data append in done
     }).fail(function (error) {
         alert('something went wrong in getList');
     });
-}
+}//end of get list
 
 
 //function to append database to dom
@@ -103,13 +124,13 @@ function appendToDom(array) {
             $tr.append('<td>Job Done</td>');
         }
         else {
-            $tr.append('<td><button class="complete">Completed</button></td>');
+            $tr.append('<td><button class="complete" data-id="' + list.id + '">Completed</button></td>');
         }
         $tr.append('<td><button class="edit" data-id="' + list.id + '">Edit</button></td>');
         $tr.append('<td><button class="remove" data-id="' + list.id + '">Remove</button></td>');
         $('.container').append($tr);
     }
-}
+}//end of appendToDom
 
 //delete requerst and function.
 
@@ -128,15 +149,15 @@ function deleteClick() {
     }).fail(function (error) {
         console.log(error);
     })
-}
+}//end of deleteClick
 // }
 
-function updateList() {
+function updateList(updatedList) {
     console.log('in edit click');
-    var listId = $(this).data('id');
     $.ajax({
         method: 'PUT',
-        url: '/toDo/' + listId
+        url: '/toDo/' + editingId,
+        data: updatedList
     }).done(function (responce) {
         getList()
         console.log('responce', responce);
