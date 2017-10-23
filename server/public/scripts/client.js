@@ -25,7 +25,7 @@ function readyNow() {
             complete: completeIn,
             notes: notesIn
         };
-        $('.listInput').empty();//this should clear input feilds
+        $('.listInput').text("");//this should clear input feilds
 
 
         if (editing) {
